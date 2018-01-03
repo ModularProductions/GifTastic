@@ -25,11 +25,16 @@ a {
 }
 
 h1 {
-
+  padding: 10px;
+  text-align: center;
 }
 
 h2 {
 
+}
+
+section {
+  padding: 10px;
 }
 
 ul {
@@ -40,6 +45,12 @@ li {
   text-align: center;
   list-style: none;
   display: inline-block;
+  padding: 15px;
+}
+
+#newQuery {
+  text-align: center;
+  margin: 0 auto;
 }
 
 input[type=text], input[type=email], textarea {
