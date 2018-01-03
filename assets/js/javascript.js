@@ -2,59 +2,52 @@ $(function() { // begin ready() on document load
 
 var topics = ["mario brothers", "legend of zelda", "donkey kong", "dragon's lair", "starfox", "gauntlet", "ghosts n' goblins", "castlevania"];
 
-function display() {
+function displayTopics() {
   for (i = 0 ; i < topics.length ; i++) {
     $('section').append('<button value="'+$.trim(topics[i])+'">'+$.trim(topics[i]));
   };
 }
 
-display();
-var queryURL = "https://api.giphy.com/v1/gifs/search/?api_key=k3AP0b4ishUDqIHJqBK4L4TrpDRDpjw8&limit='20'&q='"+$(this).val();
-
-var movie = "Mr. Nobody";
-var queryURL = "https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy";
-
-$.ajax({
-  url: queryURL,
-  method: "GET"
-}).done(function(response) {
-
-  // Obtain a reference to the tbody element in the DOM
-  var tbody = $("tbody");
-  // Create and save a reference to new empty table row
-  var newRow = $("<tr>");
-  // Create and save references to 3 td elements containing the Title, Year, and Actors from the AJAX response object
-  var title = $("<td>").text(response.Title);
-  var year = $("<td>").text(response.Year);
-  var actors = $("<td>").text(response.Actors);
-
-  // Append the td elements to the new table row
-  $(newRow).append(title, year, actors);
-  // Append the table row to the tbody element
-  $(tbody).append(newRow);
-});
-
-function addImages() {
-  console.log("clicked");
-  console.log($(this).val());
-  var queryURL = "https://api.giphy.com/v1/gifs/search/?api_key=k3AP0b4ishUDqIHJqBK4L4TrpDRDpjw8&limit='20'&q='"+$(this).val();
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).done(function(response) {
-    
-  })
-};
+displayTopics();
 
 $("#submit").on("click", function() {
   var newQuery = $.trim($("#field").val());
   if (newQuery === "" || topics.includes(newQuery)) {}
   else {
     topics.push(newQuery);
-    $("#field").val("");
-    $("section").append("<button value='"+newQuery+"'>"+newQuery)}
+    $("#field").val("");    
+    $("button").remove();
+    displayTopics();
+  }
 });
 
+function addImages() {
+  console.log("clicked");
+  var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=k3AP0b4ishUDqIHJqBK4L4TrpDRDpjw8&limit=10&q='"+$(this).val();
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+  }).done(function(response) {
+    console.log("response = ",response);
+    $("#results").empty();
+    $("#results").append("<ul>");
+    for (i = 0 ; i < 10 ; i++) {
+      $("ul").append("<li><img value='"+i+"' src='"+response.data[i].images.fixed_width_still.url+"' still='true' /><p>Rating: "+response.data[i].rating+"</p>");
+    }
+    
+    $("img").on("click", function() {
+      console.log("image click");
+      if ($(this).attr("still") === "true") {
+        $(this).attr("src", response.data[$(this).attr("value")].images.fixed_width.url);
+        $(this).attr("still", "false");
+      } else {
+        $(this).attr("src", response.data[$(this).attr("value")].images.fixed_width_still.url);
+        $(this).attr("still", "true");
+      }
+    });
+  })
+};
+  
 $("button").click(addImages);
 
 }); // end ready() on document load
