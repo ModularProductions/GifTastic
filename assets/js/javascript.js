@@ -9,7 +9,7 @@ function displayTopics() {
   for (i = 0 ; i < topics.length ; i++) {
     $('section').append('<button value="'+$.trim(topics[i])+'">'+$.trim(topics[i]));
   };
-}
+};
 
 displayTopics();
 
@@ -35,7 +35,7 @@ function addImages() {
     $("#results").append("<ul>");
     for (i = 0 ; i < 10 ; i++) {
       $("ul").append("<li><img value='"+i+"' src='"+response.data[i].images.fixed_width_still.url+"' still='true' /><p>Rating: "+response.data[i].rating+"</p>");
-    }
+    };
     
     $("img").on("click", function() {
       console.log("image click");
