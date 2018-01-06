@@ -3,26 +3,42 @@
 var topics = ["mario brothers", "legend of zelda", "donkey kong", "dragon's lair", "starfox", "gauntlet", "ghosts n' goblins", "castlevania"];
   
 var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=k3AP0b4ishUDqIHJqBK4L4TrpDRDpjw8&limit=10&q='";
+console.log("start of program, topics[] count = "+topics.length);
+
+function createButton(value) {
+  console.log("execute createButton()");
+  var button = $("<button>");
+  button.addClass("topicButton");
+  button.attr("value", value);
+  button.text(value);
+  $("section").append(button);
+  $(button).on("click", addImages);
+}
 
 function displayTopics() {
   console.log("execute displayTopics()");
   for (i = 0 ; i < topics.length ; i++) {
-    $('section').append('<button value="'+$.trim(topics[i])+'">'+$.trim(topics[i]));
+    createButton(topics[i]);
   };
 };
 
 displayTopics();
 
+// creates new button from query field
 $("#submit").on("click", function() {
+  event.preventDefault();
   console.log("new query submit clicked");
   var newQuery = $.trim($("#field").val());
-  if (newQuery === "" || topics.includes(newQuery)) {}
-  else {
+  if (newQuery == "" || topics.includes(newQuery)) {
+    $("#field").val("");
+    console.log("newQuery field invalid");
+  } else {
     topics.push(newQuery);
+    console.log("newQuery topics count = ", topics.length);
+    createButton(newQuery);
     $("#field").val("");    
-    $("button").remove();
-    displayTopics();
   }
+  console.log("past 'if'");
 });
 
 function addImages() {
@@ -50,6 +66,5 @@ function addImages() {
   })
 };
   
-$("button").on("click", addImages);
 
 // }); // end ready() on document load
